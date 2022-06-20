@@ -11,32 +11,51 @@ class PerguntaApp extends StatefulWidget {
 
 class _PerguntaAppState extends State<PerguntaApp> {
   var perguntaSelecionada = 0;
+  var notaTotal = 0;
   final perguntas = [
     {
       'texto': 'Qual é a sua cor favorita?',
-      'respostas': ['Preto', 'Vermelho', 'Verde', 'Branco'],
+      'respostas': [
+        {'texto': 'Preto', 'nota': 10},
+        {'texto': 'Vermelho', 'nota': 5},
+        {'texto': 'Verde', 'nota': 3},
+        {'texto': 'Branco', 'nota': 1}
+      ],
     },
     {
       'texto': 'Qual é o seu animal favorito?',
-      'respostas': ['Celho', 'Cobra', 'Elevante', 'Leão'],
+      'respostas': [
+        {'texto': 'Celho', 'nota': 10},
+        {'texto': 'Cobra', 'nota': 5},
+        {'texto': 'Elevante', 'nota': 3},
+        {'texto': 'Leão', 'nota': 1}
+      ],
     },
     {
       'texto': 'Qual é a sua serie favorita?',
       'respostas': [
-        'Suits',
-        'Game of Thrones',
-        'Breaking Bad',
-        'Peaky Blinders'
+        {'texto': 'Suits', 'nota': 10},
+        {'texto': 'Game of Thrones', 'nota': 5},
+        {'texto': 'Breaking Bad', 'nota': 3},
+        {'texto': 'Peaky Blinders', 'nota': 1},
       ]
     }
   ];
 
-  void responder() {
+  void responder(int pontuacao) {
     if (temPerguntaSelecionada) {
       setState(() {
         perguntaSelecionada++;
+        notaTotal += pontuacao;
       });
     }
+  }
+
+  void reiniciarQuestionario() {
+    setState(() {
+      perguntaSelecionada = 0;
+      notaTotal = 0;
+    });
   }
 
   bool get temPerguntaSelecionada {
@@ -54,8 +73,8 @@ class _PerguntaAppState extends State<PerguntaApp> {
             ? Questionario(
                 perguntaSelecionada: perguntaSelecionada,
                 perguntas: perguntas,
-                responder: responder)
-            : Resultado(),
+                quantoResponder: responder)
+            : Resultado(notaTotal, reiniciarQuestionario),
       ),
     );
   }
